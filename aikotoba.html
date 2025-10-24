@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>合言葉を集めよう</title>
+
 <style>
   body {
     font-family: "Segoe UI", sans-serif;
@@ -61,9 +62,15 @@
   // 進捗データを localStorage に保存
   const progress = JSON.parse(localStorage.getItem("foundKeys") || "[]");
 
+  // 新しいキーが見つかった場合の処理
   if (key && !progress.includes(key)) {
     progress.push(key);
     localStorage.setItem("foundKeys", JSON.stringify(progress));
+    
+    // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+    // ここにポップアップ処理を追加しました！
+    alert(key + "番目のQRコードを発見！🎉");
+    // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
   }
 
   // 3つのキーをチェック
