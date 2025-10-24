@@ -1,102 +1,193 @@
+
+Gemini との会話
 <!DOCTYPE html>
+
 <html lang="ja">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>合言葉を集めよう</title>
+
 <style>
+
   body {
+
     font-family: "Segoe UI", sans-serif;
+
     text-align: center;
+
     background: #f4f4f4;
+
     padding: 40px;
+
   }
+
   .card {
+
     background: white;
+
     border-radius: 16px;
+
     padding: 30px;
+
     max-width: 400px;
+
     margin: 0 auto;
+
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
+
   }
+
   h1 { color: #333; }
+
   .found { color: green; font-weight: bold; }
+
   .not-found { color: gray; }
+
   .aikotoba {
+
     font-size: 1.5em;
+
     color: #e91e63;
+
     margin-top: 20px;
+
   }
+
   button {
+
     margin-top: 20px;
+
     padding: 10px 20px;
+
     border: none;
+
     border-radius: 8px;
+
     background: #2196f3;
+
     color: white;
+
     font-size: 1em;
+
   }
+
 </style>
+
 </head>
+
 <body>
+
   <div class="card">
+
     <h1>合言葉を集めよう！</h1>
+
     <p>QRを読み取って3つのキーワードを集めよう。</p>
 
+
+
     <div id="status"></div>
+
     <div class="aikotoba" id="result"></div>
 
+
+
     <button onclick="resetProgress()">リセット</button>
+
   </div>
 
+
+
 <script>
+
 (function() {
+
   // 合言葉の設定（ここを自由に変更OK）
+
   const FINAL_KEYWORD = "🌸サクラヒメ🌸";
 
+
+
   // URLのクエリパラメータから key を取得
+
   const params = new URLSearchParams(window.location.search);
+
   const key = params.get("key");
 
+
+
   // 進捗データを localStorage に保存
+
   const progress = JSON.parse(localStorage.getItem("foundKeys") || "[]");
 
-  // 新しいキーが見つかった場合の処理
+
+
   if (key && !progress.includes(key)) {
+
     progress.push(key);
+
     localStorage.setItem("foundKeys", JSON.stringify(progress));
-    
-    // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-    // ここにポップアップ処理を追加しました！
-    alert(key + "番目のQRコードを発見！🎉");
-    // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+
   }
+
+
 
   // 3つのキーをチェック
+
   const totalKeys = 3;
+
   const foundCount = progress.length;
 
+
+
   // ステータスを表示
+
   const statusDiv = document.getElementById("status");
+
   let html = "";
+
   for (let i = 1; i <= totalKeys; i++) {
+
     html += `<p>${i}番目のQR：<span class="${
+
       progress.includes(String(i)) ? "found" : "not-found"
+
     }">${progress.includes(String(i)) ? "発見済み" : "未発見"}</span></p>`;
+
   }
+
   statusDiv.innerHTML = html;
 
+
+
   // すべて揃ったら合言葉表示
+
   if (foundCount === totalKeys) {
+
     document.getElementById("result").textContent = "合言葉は「" + FINAL_KEYWORD + "」！";
+
   }
 
+
+
   // リセット機能
+
   window.resetProgress = function() {
+
     localStorage.removeItem("foundKeys");
+
     location.reload();
+
   };
+
 })();
+
 </script>
+
 </body>
+
 </html>
